@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Bomberman</title>
+      <link rel="stylesheet" href="style.css">
+</head>
+<body>
+      <main id="mainMenu">
+            <img src="Sprite/logo.png" alt="">
+            <input type="text" placeholder="Input Username">
+            <select id="">
+                  <option value="" hidden selected>Select Level</option>
+                  <option value="1">Easy</option>
+                  <option value="2">Medium</option>
+                  <option value="2">Hard</option>
+            </select>
+            <div id="buttonContainer">
+                  <button>Play</button>
+                  <button>Instruction</button>
+            </div>
+      </main>
+      <div id="instructionMenu">
+            <h2>How to play game</h2>
+            <ol>
+                  <li>Input Username</li>
+                  <li>Put the Bomb</li>
+                  <li>Blow up as many walls as possible</li>
+                  <li>Blow up enemies</li>
+                  <li>Enjoy!</li>
+            </ol>
+            <div id="closeBtn"></div>
+      </div>
+      <div id="gameoverMenu"> 
+            <h1>Game Over!</h1>
+            <h4>Good job <span>John</span> your time 01:22 with results:</h4>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                  <img src="Sprite/brick_crack.png" width="48px">
+                  <h2>= 4</h2>
+                  <img src="Sprite/tnt.png" width="48px">
+                  <h2>= 0</h2>
+                  <img src="Sprite/ice.png" width="48px">
+                  <h2>= 0</h2>
+            </div>
+            <div id="buttonContainer" style="justify-content: center; gap: 18px;">
+                  <button id="leftBtn">Save Score</button>
+                  <button id="rightBtn">Leaderboards</button>
+            </div>
+      </div>
+      <div id="leaderboardMenu"> 
+            <h1>Leaderboards</h1>
+                  <table>
+                        <thead>
+                              <th>Player Name</th>
+                              <th>Time</th>
+                              <th><img src="Sprite/brick_crack.png" width="24px"></th>
+                              <th><img src="Sprite/tnt.png" width="24px"></th>
+                              <th><img src="Sprite/ice.png" width="24px"></th>
+                        </thead>
+                       <tr>
+                              <td>David Martinez</td>
+                              <td>05:32</td>
+                              <td>9</td>
+                              <td>1</td>
+                              <td>1</td>
+                        </tr>
+                        <tr>
+                              <td>John</td>
+                              <td>05:32</td>
+                              <td>9</td>
+                              <td>1</td>
+                              <td>1</td>
+                        </tr>
+                  </table>
+            <div id="buttonContainer" style="justify-content: center; gap: 18px; margin-top: 18px;">
+                  <button id="leftBtn">Play Again</button>
+                  <button id="rightBtn">Reset</button>
+            </div>
+      </div>
+      <canvas id="screen"></canvas>
+
+      <script src="main.js"></script>
+</body>
+</html>
