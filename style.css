@@ -20,7 +20,6 @@
     padding: 48px 32px;
 }
 #gameoverMenu{
-    display: flex;
     display: none;
     position: absolute;
     flex-direction: column;
@@ -41,8 +40,50 @@
     gap: 18px;
     color: white;
 }
-
+canvas{
+    background-color: black;
+    display: none;
+    transform: translate(-130px);
+    z-index: 20;
+}
+#uiGameMenu{
+    position: absolute;
+    display: none;
+    width: 1000px;
+    height: 603px;
+    z-index: 10;
+}
 /*  */
+#uiGameMenu *{
+    margin-bottom: 6px;
+}
+#uiGameMenu div{
+    background-color: rgb(69, 69, 69);
+    color: white;
+    padding: 20px 38px;
+    right: 0;
+    position: absolute;
+    width: 186px;
+    height: 563px;
+}
+.item{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 18px;
+}
+.item img{
+    width: 48px;
+}
+#health{
+    width: 60%;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 20px 0;
+}
+#health *{
+    width: 32px;
+}
 h1{
     font-size: 48px;
     font-weight:bolder;

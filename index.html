@@ -9,16 +9,16 @@
 <body>
       <main id="mainMenu">
             <img src="Sprite/logo.png" alt="">
-            <input type="text" placeholder="Input Username">
-            <select id="">
+            <input type="text" id="playerNameInput" placeholder="Input Username">
+            <select id="gameDifficulty">
                   <option value="" hidden selected>Select Level</option>
                   <option value="1">Easy</option>
                   <option value="2">Medium</option>
-                  <option value="2">Hard</option>
+                  <option value="3">Hard</option>
             </select>
             <div id="buttonContainer">
-                  <button>Play</button>
-                  <button>Instruction</button>
+                  <button onclick="play()">Play</button>
+                  <button onclick="instructionToggle()">  Instruction</button>
             </div>
       </main>
       <div id="instructionMenu">
@@ -30,7 +30,7 @@
                   <li>Blow up enemies</li>
                   <li>Enjoy!</li>
             </ol>
-            <div id="closeBtn"></div>
+            <div id="closeBtn" onclick="instructionToggle()"></div>
       </div>
       <div id="gameoverMenu"> 
             <h1>Game Over!</h1>
@@ -79,7 +79,27 @@
             </div>
       </div>
       <canvas id="screen"></canvas>
-
+      <div id="uiGameMenu">
+            <div>
+                  <h2 style="margin-bottom: 12px;">BOMBSKUY</h2>
+                  <pre>Player       <span id="playerName">: David Martinez</span></pre>
+                  <pre>Time         <span id="timer">: 18:06</span></pre>
+                  <section id="health">
+                  </section>
+                  <section class="item">
+                        <img src="Sprite/brick_crack.png" alt="">
+                        <h2 id="crackBrickUi">= 0</h2>
+                  </section>
+                  <section class="item">
+                        <img src="Sprite/tnt.png" alt="">
+                        <h2 id="tntUi">= 0</h2>
+                  </section>
+                  <section class="item">
+                        <img src="Sprite/ice.png" alt="">
+                        <h2 id="iceUi">= 0</h2>
+                  </section>
+            </div>
+      </div>
       <script src="main.js"></script>
 </body>
 </html>
