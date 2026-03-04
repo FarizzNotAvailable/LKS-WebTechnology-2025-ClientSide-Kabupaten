@@ -1,182 +1,195 @@
-*{
-      padding: 0;
-      margin: 0;
-      font-family:Arial, Helvetica, sans-serif;
+* {
+  padding: 0;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
 /* Pages */
 
-#mainMenu{
+#mainMenu {
+  display: flex;
+  /* display: none;   */
+}
+#instructionMenu {
+  display: none;
+  position: absolute;
+  background-color: black;
+  color: white;
+  opacity: 90%;
+  width: 720px;
+  height: 480px;
+  padding: 48px 32px;
+}
+#gameoverMenu {
+  display: none;
+  position: absolute;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 480px;
+  gap: 18px;
+  color: white;
+}
+#leaderboardMenu {
+  display: flex;
+  display: none;
+  position: absolute;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 480px;
+  gap: 18px;
+  color: white;
+}
+canvas {
+  background-color: black;
+  display: none;
+  transform: translate(-130px);
+  z-index: 20;
+}
+#uiGameMenu {
+  position: absolute;
+  display: none;
+  width: 1000px;
+  height: 603px;
+  z-index: 10;
+}
+#pauseMenu{
+    position: absolute;
     display: flex;
-    /* display: none;   */
-}
-#instructionMenu{
     display: none;
-    position: absolute;
-    background-color: black;
+    z-index: 30;
+    background-color: rgb(70, 70, 70);
     color: white;
-    opacity: 90%;
-    width: 720px;
-    height: 480px;
-    padding: 48px 32px;
-}
-#gameoverMenu{
-    display: none;
-    position: absolute;
+    border-radius: 12px;
+    padding: 60px 120px;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    width: 480px;
     gap: 18px;
-    color: white;
-}
-#leaderboardMenu{
-    display: flex;
-    display: none;
-    position: absolute;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 480px;
-    gap: 18px;
-    color: white;
-}
-canvas{
-    background-color: black;
-    display: none;
-    transform: translate(-130px);
-    z-index: 20;
-}
-#uiGameMenu{
-    position: absolute;
-    display: none;
-    width: 1000px;
-    height: 603px;
-    z-index: 10;
 }
 /*  */
-#uiGameMenu *{
-    margin-bottom: 6px;
+#uiGameMenu * {
+  margin-bottom: 6px;
 }
-#uiGameMenu div{
-    background-color: rgb(69, 69, 69);
-    color: white;
-    padding: 20px 38px;
-    right: 0;
-    position: absolute;
-    width: 186px;
-    height: 563px;
+#uiGameMenu div {
+  background-color: rgb(69, 69, 69);
+  color: white;
+  padding: 20px 38px;
+  right: 0;
+  position: absolute;
+  width: 186px;
+  height: 563px;
 }
-.item{
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding-bottom: 18px;
+.item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 18px;
 }
-.item img{
-    width: 48px;
+.item img {
+  width: 48px;
 }
-#health{
-    width: 60%;
-    display: flex;
-    justify-content: space-evenly;
-    padding: 20px 0;
+#health {
+  width: 60%;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px 0;
 }
-#health *{
-    width: 32px;
+#health * {
+  width: 32px;
 }
-h1{
-    font-size: 48px;
-    font-weight:bolder;
+h1 {
+  font-size: 48px;
+  font-weight: bolder;
 }
-h4{
-    font-size: 20px;
+h4 {
+  font-size: 20px;
 }
-#leftBtn{
-    background-color: orangered;
+#leftBtn {
+  background-color: orangered;
 }
-#rightBtn{
-    background-color: darkcyan;
-    width: fit-content;
-    min-width: 128px;   
+#rightBtn {
+  background-color: darkcyan;
+  width: fit-content;
+  min-width: 128px;
 }
-table{
-    font-size: 20px;
-    width: 480px;
-    border-collapse: collapse;
-    text-align: left;
+table {
+  font-size: 20px;
+  width: 480px;
+  border-collapse: collapse;
+  text-align: left;
 }
-table *{
-    padding: 6px 2px;
+table * {
+  padding: 6px 2px;
 }
-td{
-    border: 0;
-    border-bottom: 1px;
-    border-color: white;
-    border-style: solid;
+td {
+  border: 0;
+  border-bottom: 1px;
+  border-color: white;
+  border-style: solid;
 }
-h2{
-    font-size: 32px;
+h2 {
+  font-size: 32px;
 }
-body{
-    display: flex;
-    height: 98vh;
-    justify-content: center;
-    align-items: center;
-    /* background-color: rgb(69, 69, 69); */
-    background-color: rgb(245, 245, 245);
+body {
+  display: flex;
+  height: 98vh;
+  justify-content: center;
+  align-items: center;
+  /* background-color: rgb(69, 69, 69); */
+  background-color: rgb(245, 245, 245);
 }
-main{
-    flex-direction: column;
-    gap: 12px;
-    position: absolute
+main {
+  flex-direction: column;
+  gap: 12px;
+  position: absolute;
 }
-input{
-    padding: 12px;
-    border-radius: 6px;
-    background-color:chocolate;
-    color: white;
-    font-size: 18px;
-    border: 2px solid black;
+input {
+  padding: 12px;
+  border-radius: 6px;
+  background-color: chocolate;
+  color: white;
+  font-size: 18px;
+  border: 2px solid black;
 }
-input::placeholder{
-    color: white;
+input::placeholder {
+  color: white;
 }
-select{
-    padding: 12px;
-    border-radius: 6px;
-    background-color:chocolate;
-    color: white;
-    border: 2px solid black;
-    font-size: 18px;
+select {
+  padding: 12px;
+  border-radius: 6px;
+  background-color: chocolate;
+  color: white;
+  border: 2px solid black;
+  font-size: 18px;
 }
-button{
-    font-size: 18px;
-    font-weight: bold;
-    width: 128px;
-    border-radius: 6px;
-    background-color: black;
-    color: white;
-    border: none;
-    padding: 12px;
+button {
+  font-size: 18px;
+  font-weight: bold;
+  width: 128px;
+  border-radius: 6px;
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 12px;
 }
-#buttonContainer{
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+#buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
-#instructionMenu *{
-    margin-bottom: 32px;
+#instructionMenu * {
+  margin-bottom: 32px;
 }
-#instructionMenu ol{
-    transform: translate(24px);
-    font-size: 20px;
+#instructionMenu ol {
+  transform: translate(24px);
+  font-size: 20px;
 }
-#closeBtn{
-    background-image: url(Sprite/close-icon.png);
-    background-size: cover;
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    right: 32px;
-    top: 32px;
+#closeBtn {
+  background-image: url(Sprite/close-icon.png);
+  background-size: cover;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 32px;
+  top: 32px;
 }

@@ -10,7 +10,8 @@ function play(){
     ice : 0,
     crack : 0,
     tnt : 0,
-    isGameover:false
+    isGameover:false,
+    isPaused:false
 }
     if(document.getElementById('playerNameInput').value == "" || document.getElementById('gameDifficulty').value == ""){
         return
@@ -63,6 +64,17 @@ function mainMenu(){
     document.getElementById('mainMenu').style.display = "flex"
     document.body.style.backgroundColor = 'white'
 }
+function pauseToggle(){
+    if(document.getElementById('pauseMenu').style.display == 'flex'){
+        document.getElementById('pauseMenu').style.display = 'none'
+        gameState.isPaused = false
+        update(performance.now())
+    }else{
+        document.getElementById('pauseMenu').style.display = "flex"
+        gameState.isPaused = true
+    }
+
+}
 // Game 
 let screen
 let ctx
@@ -80,7 +92,8 @@ let gameState = {
     ice : 0,
     crack : 0,
     tnt : 0,
-    isGameover:false
+    isGameover:false,
+    isPaused : false
 }
 
 let player
@@ -111,6 +124,9 @@ function start(){
 }
 
 function update(timeStamp){
+    if(gameState.isPaused){
+        return
+    }
     if(gameState.isGameover){
         return
     }
@@ -120,7 +136,9 @@ function update(timeStamp){
     draw()
     requestAnimationFrame(update)
     dirrection()
-    player.move(deltaTime)
+    if(!player.isFreeze){
+        player.move(deltaTime)
+    }
     player.takeitem()
     for(dog of Dogs.values()){
         dog.move(deltaTime)
@@ -128,7 +146,13 @@ function update(timeStamp){
 }
 
 function UpdateEverySecond(){
+    if(gameState.isPaused){
+        return
+    }
+    dogAi()
     gameState.timer += 1
+    player.immune -= 1
+    player.cooldown -= 1
     for(bomb of Bombs.values()){
         bomb.timer -= 1
         checkEven = bomb.timer%2
@@ -165,27 +189,35 @@ function UpdateEverySecond(){
             }
         }
         if(isColide(player, explosion, 1)){
-            gameState.health -= 1
-            if(gameState.health == 0){
-                player.x = 2000
-                player.y = 2000
-                gameOver()
+            if(player.immune < 0){
+                gameState.health -= 1
+                player.immune = 2
+            }
+        }
+        for(dog of Dogs.values()){
+            if(isColide(explosion, dog, 10)){
+                Dogs.delete(dog)
             }
         }
     }
+    if(gameState.health == 0){
+                    player.x = 2000
+                    player.y = 2000
+                    gameOver()
+                }
     UiMenu()
 
 }
 
 let tileMap = [
     "WWWWWWWWWWW",
-    "WpssB B B W",
-    "WsWBWBWBWBW",
-    "WsB B B B W",
-    "WBWBWBWBWBW",
-    "W B B B B W",
-    "WBWBWBWBWBW",
-    "W B B B B W",
+    "WpssB     W",
+    "WsWBW W W W",
+    "WsB       W",
+    "WBW W W W W",
+    "W         W",
+    "W W W W W W",
+    "W         W",
     "WWWWWWWWWWW",
 ]
 
@@ -199,7 +231,7 @@ function getSprite(){
     logo_whiteImage = new Image()      ; logo_whiteImage.src = "Sprite/logo_white.png"
     iceImage = new Image()      ; iceImage.src = "Sprite/ice.png"
     tntImage = new Image()      ; tntImage.src = "Sprite/tnt.png"
-    brick_crackImage = new Image()      ; brick_crackImage.src = "Sprite/brick_crack.png"
+    heartImage = new Image()      ; heartImage.src = "Sprite/heart.png"
 
     char_downImage = new Image()      ; char_downImage.src = "Sprite/char_down.png"
     char_upImage = new Image()      ; char_upImage.src = "Sprite/char_up.png"
@@ -237,14 +269,20 @@ function setGameObject(){
             }
             if(char == "p"){
                 player = new GameObject(char_downImage, x, y, 64, 64, )
+                player.isFreeze = false
+                player.immune = 2
             }
             if( char == " "){
-                    isThereADog = Math.floor(Math.random()*4)
-                    
+                    isThereADog = Math.floor(Math.random()*3)
                     if(isThereADog == 2 && Dogs.size < gameState.gameDifficulty){
                         console.log('2')
                         const dog = new GameObject(dog_downImage, x, y, tileSize, tileSize)
                         Dogs.add(dog)
+                    }
+                    isThereABrick  = Math.floor(Math.random()*4)
+                    if(isThereADog != 2 && isThereABrick != 2 ){
+                        const brick = new GameObject(brickImage, x, y, tileSize, tileSize)
+                        Bricks.add(brick)
                     }
             }
         }
@@ -268,10 +306,10 @@ function draw(){
     for(dog of Dogs.values()){
         ctx.drawImage(dog.image,dog.x, dog.y, dog.width, dog.height)
     }
+    ctx.drawImage(player.image,player.x, player.y, player.width, player.height)
     for(item of Items.values()){
         ctx.drawImage(item.image,item.x, item.y, item.width, item.height)
     }
-    ctx.drawImage(player.image,player.x, player.y, player.width, player.height)
 }
 
 function dirrection(){
@@ -286,6 +324,20 @@ function dirrection(){
     }
     else if(player.velocityY < 0){
         player.image = char_upImage
+    }
+    for(dog of Dogs.values()){
+        if(dog.velocityX > 0){
+            dog.image = dog_rightImage
+        }
+        else if(dog.velocityX < 0){
+            dog.image = dog_leftImage
+        }
+        else if(dog.velocityY > 0){
+            dog.image = dog_downImage
+        }
+        else if(dog.velocityY < 0){
+            dog.image = dog_upImage
+        }
     }
 }
 function handleKeyDown(e){
@@ -302,7 +354,13 @@ function handleKeyDown(e){
         player.velocityY = -0.15
     }
     if(e.key === ' '){
-        summonBomb()
+            if(Bombs.size < gameState.tnt+1){
+                summonBomb()
+                player.cooldown = 5
+            }
+    }
+    if(e.key === 'Escape'){
+        pauseToggle()
     }
 }
 function handleKeyUp(e){
@@ -324,7 +382,7 @@ function summonBomb(){
     Ypos = Math.floor((player.y+30)/67)
 
     const bomb = new GameObject(bombImage, Xpos*tileSize, Ypos*tileSize, tileSize, tileSize)
-    bomb.timer = 2 
+    bomb.timer = 5 
     console.log(bomb)
     Bombs.add(bomb)
     console.log(Xpos)
@@ -343,11 +401,12 @@ function brickDestroyed(brick){
         item = new GameObject(tntImage, brick.x+tileSize/4, brick.y+tileSize/4, brick.width/2, brick.width/2)
         item.id = 2
     }else if(itemId == 3){
-        item = new GameObject(brick_crackImage, brick.x+tileSize/4, brick.y+tileSize/4, brick.width/2, brick.width/2)
+        item = new GameObject(heartImage, brick.x+tileSize/4, brick.y+tileSize/4, brick.width/2, brick.width/2)
         item.id = 3
     }else(
         item = null
     )
+    gameState.crack += 1
     if(item){
         Items.add(item)
     }
@@ -382,6 +441,28 @@ function isColide(obj1, obj2, padding){
             obj1.y < obj2.y + obj2.height - padding &&
             obj1.y + obj1.height - padding > obj2.y
 }
+
+function dogAi() {
+    const px = Math.floor((player.x + 30) / tileSize);
+    const py = Math.floor((player.y + 30) / tileSize);
+
+    for (const dog of Dogs) {
+        const dx = Math.floor((dog.x + dog.width/2) / tileSize);
+        const dy = Math.floor((dog.y + dog.height/2) / tileSize);
+
+        if (px > dx) {
+            dog.velocityX = 0.1;  dog.velocityY = 0;
+        } else if (px < dx) {
+            dog.velocityX = -0.1; dog.velocityY = 0;
+        } else if (py > dy) {
+            dog.velocityY = 0.1;  dog.velocityX = 0;
+        } else if (py < dy) {
+            dog.velocityY = -0.1; dog.velocityX = 0;
+        } else {
+            dog.velocityX = dog.velocityY = 0;
+        }
+    }
+}
 class GameObject{
     constructor(image, x,y, width, height, velocityX = 0, velocityY = 0){
         this.image = image
@@ -398,7 +479,7 @@ class GameObject{
         for(let brick of Bricks.values()){
             if(isColide(this, brick, 8)){
                     if(this.velocityX >0){
-                            this.x = brick.x - brick.width +10
+                            this.x = brick.x - brick.width +8
                     }
                     if(this.velocityX < 0){
                             this.x = brick.x + brick.width -8
@@ -409,7 +490,7 @@ class GameObject{
         for(let wall of Walls.values()){
                 if(isColide(this, wall, 8)){
                     if(this.velocityX >0){
-                            this.x = wall.x - wall.width +10
+                            this.x = wall.x - wall.width +8
                     }
                     if(this.velocityX < 0){
                             this.x = wall.x + wall.width -8
@@ -420,20 +501,20 @@ class GameObject{
         for(let brick of Bricks.values()){
                 if(isColide(this, brick, 8)){
                     if(this.velocityY >0){
-                            this.y = brick.y - brick.width +10
+                            this.y = brick.y - brick.height +8
                     }
                     if(this.velocityY < 0){
-                            this.y = brick.y + brick.width -8
+                            this.y = brick.y + brick.height -8
                     }
                 }
         }
         for(let wall of Walls.values()){
                 if(isColide(this, wall, 8)){
                     if(this.velocityY >0){
-                            this.y = wall.y - wall.width +10
+                            this.y = wall.y - wall.height +8
                     }
                     if(this.velocityY < 0){
-                            this.y = wall.y + wall.width -8
+                            this.y = wall.y + wall.height -8
                     }
                 }
         }
@@ -443,17 +524,23 @@ class GameObject{
             if(isColide(this, item, 5)){
                 if(item.id == 1){
                     gameState.ice += 1
+                    this.isFreeze = true
+                    const freeze = new GameObject(iceImage, this.x+tileSize/6, this.y+tileSize/6, this.width*3/4, this.width*3/4)
+                    freeze.id = 4
+                    Items.add(freeze)
+                    setTimeout(()=>{this.isFreeze = false; Items.delete(freeze)}, 5000)
                 }else if(item.id == 2){
                     gameState.tnt += 1
-                }else{
-                    gameState.crack += 1
+                }else if(item.id == 3){
+                    gameState.health -= 1
                 }
-                Items.delete(item)
-                UiMenu()
+                if(item.id != 4){
+                    Items.delete(item)
+                }
             }
         }
     }
     
 }
 
-// window.onload = start()
+window.onload = start()
