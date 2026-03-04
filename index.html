@@ -34,18 +34,18 @@
       </div>
       <div id="gameoverMenu"> 
             <h1>Game Over!</h1>
-            <h4>Good job <span>John</span> your time 01:22 with results:</h4>
+            <h4>Good job <span id="namePlayer">John</span> your time <span id="playerTimer">00:00</span>with results:</h4>
             <div style="display: flex; align-items: center; gap: 20px;">
                   <img src="Sprite/brick_crack.png" width="48px">
-                  <h2>= 4</h2>
+                  <h2 id="crackBrickTotal">= 4</h2>
                   <img src="Sprite/tnt.png" width="48px">
-                  <h2>= 0</h2>
+                  <h2 id="tntTotal">= 0</h2>
                   <img src="Sprite/ice.png" width="48px">
-                  <h2>= 0</h2>
+                  <h2 id="iceTotal">= 0</h2>
             </div>
             <div id="buttonContainer" style="justify-content: center; gap: 18px;">
-                  <button id="leftBtn">Save Score</button>
-                  <button id="rightBtn">Leaderboards</button>
+                  <button id="leftBtn" onclick="mainMenu()">Save Score</button>
+                  <button id="rightBtn" onclick="LeaderBoardMenu()">Leaderboards</button>
             </div>
       </div>
       <div id="leaderboardMenu"> 
@@ -74,7 +74,7 @@
                         </tr>
                   </table>
             <div id="buttonContainer" style="justify-content: center; gap: 18px; margin-top: 18px;">
-                  <button id="leftBtn">Play Again</button>
+                  <button id="leftBtn" onclick="mainMenu()">Play Again</button>
                   <button id="rightBtn">Reset</button>
             </div>
       </div>
